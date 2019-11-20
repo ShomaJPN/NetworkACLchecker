@@ -5,7 +5,8 @@ This tiny ShellScript checks the ACL of Network-device by a Single Mac /w multip
 This script actually send/receive data to check, so you can leave a evidence.  
 You can speciried Protocol (TCP/UDP), IPaddress (Src/Dst), PortNo(Src/Dst).  
 
-![nwtester_top](https://user-images.githubusercontent.com/49780970/69122782-0b338080-0ae3-11ea-8e81-06cd65b2e0af.gif)
+![catch_fig](https://user-images.githubusercontent.com/49780970/69229172-4a87cd00-0bc8-11ea-8997-b1ef815e5d85.gif)
+
 
 ## Description
 The feature of this script is to actually send and receive data, and Netcat is used for it.  
@@ -31,7 +32,7 @@ The network configuration diagram is as follows.
 By using two NICs, Send/Recieve (Src/Dst) are performed on the same single Mac.  
 When Testing two or more Src/Dst IP-addresses at the same time, you have to add multiple IP-addresses to one NIC.  
 
-![nwtester_nwconf](https://user-images.githubusercontent.com/49780970/69123190-15a24a00-0ae4-11ea-9284-ddf9599c8dd8.jpg)
+![nw_fig](https://user-images.githubusercontent.com/49780970/69229256-75722100-0bc8-11ea-9339-878b1dd21d01.jpg)
 
 The general flow is as follows:
 1. Set IP address to NICs. 
@@ -41,17 +42,20 @@ The general flow is as follows:
 
 For the sake of clarity, we will test with the following configuration.  
 
-![nwtester_sample_env2](https://user-images.githubusercontent.com/49780970/69124411-26a08a80-0ae7-11ea-80b7-38a5cade2414.jpg)
+![sample_config](https://user-images.githubusercontent.com/49780970/69229310-8e7ad200-0bc8-11ea-879d-cda7dff1dd07.jpg)
+
 
 |NW|||
 |:--|:--|:--|
 ||SrcSide|192.168.100.0/24|
 ||DstSide|192.168.101.0/24|
 
+
 |Mac     ||IP|GW|
 |:--|:--|:--|:--|
 ||en7|192.168.100.1-4|192.168.100.254|
 ||en8|192.168.101.1-4|192.168.101.254|
+
 
 |Target|||
 |:--|:--|:--|
@@ -102,7 +106,7 @@ $ ifconfig en8 |grep 'inet '
 When assigning more...it may be helpful to modify and use `AddIPadress.sh`
 
 
-### 2.Make route to Src/Dst IP addresses with each other 
+### 2.Make route to IP addresses 
 Set the route so that Src IP and Dst IP do not communicate via MAC-inside (but through the gateway)
 ```
 $ sudo route delete -net 192.168.100
@@ -125,7 +129,7 @@ May be helpful to modify and use `MakeRoute.sh`
 
 
 ### 3.Add test-parameter
-Add test-parameteers to `NetworkACLchecker.sh` in the following format (in ACLtestList-area)
+Add test-parameteers to `NetworkACLchecker.sh` in the following format (ACLtestList-area)
 
 `Protocol<tcp|udp> Src-IPaddress:Src-PortNo Dst-IPaddress:Dst-PortNo`
 
@@ -164,7 +168,7 @@ udp 192.168.100.4/24:9003 192.168.101.4/24:5090 NG
 At the first run, confirmation Firewall-dialog (Do you want the application "nc" to accept incoming network connections? ..) is appeared.  
 Please allow it (in the case of Mojave )   
 
-![nc-incomming1](https://user-images.githubusercontent.com/49780970/69123955-0c19e180-0ae6-11ea-8296-6df16e0a21bc.jpg)
+![FWDiag](https://user-images.githubusercontent.com/49780970/69227548-54f49780-0bc5-11ea-874f-d934da881d76.jpg)
 
 If it fails by mistake, Change it in System Preferences->Security & Privacy->Firewall->Firewall Options...
 
