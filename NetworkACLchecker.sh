@@ -26,7 +26,7 @@ echo $(date +"%Y-%m-%d %T") : $@ | tee -a "$LogFile"
 
 function SendToResultLog ()
 {
-echo $@ | tee -a "$ResultLogFile"
+echo "$@" | tee -a "$ResultLogFile"
 }
 
 ##################### End of set "Log" file and function #######################
@@ -67,7 +67,7 @@ printf "\n"
 
 # Check $ROOTPASS
 sudo -k
-[ ! $( echo $ROOTPASS |sudo -S whoami 2>/dev/null |grep root) ] &&
+[ ! $( echo "$ROOTPASS" |sudo -S whoami 2>/dev/null |grep root) ] &&
  SendToLog "root-passwd is wrong!"                              &&
  exit 1
 
@@ -76,9 +76,9 @@ sudo -k
 ACLtestList=$(echo "$ACLtestList" |grep -v ^$)
 
 while read LINE;do
-    Protocol=$(echo $LINE  |cut -d' ' -f1)
-    SrcIP=$(echo $LINE  |cut -d' ' -f2)
-    DstIP=$(echo $LINE  |cut -d' ' -f3)
+    Protocol=$(echo $LINE |cut -d' ' -f1)
+    SrcIP=$(echo $LINE |cut -d' ' -f2)
+    DstIP=$(echo $LINE |cut -d' ' -f3)
 
     SrcIPaddress=$(echo $SrcIP |cut -d'/' -f1)
     SrcIPnetmask=$(echo $SrcIP |cut -d'/' -f2 |cut -d':' -f1)
@@ -104,7 +104,7 @@ if [ "$Protocol" = "tcp" ] ; then
     # Make Reciver
     # Use sudo for the case of setting well-known port
     sudo -k                                                       # to Avoid showing the $ROOTPASS
-    echo $ROOTPASS | sudo -S nc -l $DstIPaddress $DstIPport 2>/dev/null >> "$ResultLogFile" &
+    echo "$ROOTPASS" | sudo -S nc -l $DstIPaddress $DstIPport 2>/dev/null >> "$ResultLogFile" &
 
     # Wait for "nc -l" to be activate
     sleep 0.4
@@ -128,7 +128,7 @@ elif [ "$Protocol" = "udp" ] ; then
     # Make Reciver
     # Use sudo for the case of setting well-known port
     sudo -k                                                       # to Avoid showing the $ROOTPASS
-    echo $ROOTPASS | sudo -S nc -ul $DstIPaddress $DstIPport 2>/dev/null >> "$ResultLogFile" &
+    echo "$ROOTPASS" | sudo -S nc -ul $DstIPaddress $DstIPport 2>/dev/null >> "$ResultLogFile" &
 
     # Wait for "nc -ul" to be activate
     while [ ! "$(netstat -an |grep udp4 |grep $DstIPaddress.$DstIPort)" ]; do
