@@ -5,7 +5,7 @@ This tiny ShellScript checks the ACL of Network-device by a Single Mac /w multip
 This script actually send/receive data to check, so you can leave a evidence.  
 You can speciried Protocol (TCP/UDP), IPaddress (Src/Dst), PortNo(Src/Dst).  
 
-![catch_fig](https://user-images.githubusercontent.com/49780970/69229172-4a87cd00-0bc8-11ea-8997-b1ef815e5d85.gif)
+![catch_fig](https://user-images.githubusercontent.com/49780970/69261960-f00d6180-0c05-11ea-8322-54f73bdaece7.gif)
 
 
 ## Description
@@ -155,7 +155,7 @@ $ bash /Path/To/NetworkACLchecker.sh
 ```
 
 ```
-$ tail -f /Path/To/NetworkACLtest.log
+$ tail -f /Path/To/NetworkACLresult.log
 tcp 192.168.100.1/24:9000 192.168.101.1/24:22 OK
 tcp 192.168.100.1/24:9000 192.168.101.2/24:80 OK
 tcp 192.168.100.2/24:9001 192.168.101.1/24:22 NG
