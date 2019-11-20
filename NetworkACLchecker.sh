@@ -8,7 +8,8 @@
 ######################## Set "Log" file and function ###########################
 
 LogPath=$HOME/log
-LogFile="$LogPath/NetworkACLcheckr.log"
+LogFile="$LogPath/NetworkACLchecker.log"
+ResultLogFile="$LogPath/NetworkACLresult.log"
 
 if [ ! -d "$LogPath" ]; then
     echo "Log directory is not exit!"
@@ -21,6 +22,11 @@ fi
 function SendToLog ()
 {
 echo $(date +"%Y-%m-%d %T") : $@ | tee -a "$LogFile"
+}
+
+function SendToResultLog ()
+{
+echo $@ | tee -a "$ResultLogFile"
 }
 
 ##################### End of set "Log" file and function #######################
@@ -66,7 +72,7 @@ sudo -k
  exit 1
 
 
-# delete blank-line
+# Delete blank-line
 ACLtestList=$(echo "$ACLtestList" |grep -v ^$)
 
 while read LINE;do
@@ -98,19 +104,21 @@ if [ "$Protocol" = "tcp" ] ; then
     # Make Reciver
     # Use sudo for the case of setting well-known port
     sudo -k                                                       # to Avoid showing the $ROOTPASS
-    echo $ROOTPASS | sudo -S nc -l $DstIPaddress $DstIPport 2>/dev/null >> "$LogFile" &
+    echo $ROOTPASS | sudo -S nc -l $DstIPaddress $DstIPport 2>/dev/null >> "$ResultLogFile" &
 
     # Wait for "nc -l" to be activate
     sleep 0.4
     while [ ! "$(netstat -anL |grep $DstIPaddress.$DstIPort)" ]; do
         sleep 0.01
     done
+    SendToLog "Reciver tcp $DstIPaddress.$DstIPort is active"
 
     # Send Data
     # Use nmap-version ncat to specify the source IP/Port address
     echo $LINE OK |
     ncat -s $SrcIPaddress -p $SrcIPport $DstIPaddress $DstIPport ||
-    SendToLog "$LINE NG"
+    SendToResultLog "$LINE NG"
+    SendToLog "Send tcp-data is finished"
 
     # Kill Reciver
     sudo pkill sudo
@@ -120,17 +128,19 @@ elif [ "$Protocol" = "udp" ] ; then
     # Make Reciver
     # Use sudo for the case of setting well-known port
     sudo -k                                                       # to Avoid showing the $ROOTPASS
-    echo $ROOTPASS | sudo -S nc -ul $DstIPaddress $DstIPport 2>/dev/null >> "$LogFile" &
+    echo $ROOTPASS | sudo -S nc -ul $DstIPaddress $DstIPport 2>/dev/null >> "$ResultLogFile" &
 
     # Wait for "nc -ul" to be activate
     while [ ! "$(netstat -an |grep udp4 |grep $DstIPaddress.$DstIPort)" ]; do
         sleep 0.01
     done
+    SendToLog "Reciver tcp $DstIPaddress.$DstIPort is active"
 
     # Send Data
     echo $LINE OK |
     ncat -s $SrcIPaddress -p $SrcIPport -u $DstIPaddress $DstIPport ||
-    SendToLog "$LINE NG"
+    SendToResultLog "$LINE NG"
+    SendToLog "Send udp-data is finished"
 
     # Kill Reciver
     sudo pkill sudo
