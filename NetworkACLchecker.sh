@@ -4,14 +4,32 @@
 #
 #
 
-printf "Enter root-password: "
-read -s ROOTPASS
-printf "\n"
 
-# Reset sudo
-sudo -k
-# Check $ROOTPASS
-[ ! $( echo $ROOTPASS |sudo -S whoami 2>/dev/null |grep root) ] && echo "root-passwd is wrong!" && exit 1
+######################## Set "Log" file and function ###########################
+
+LogPath=$HOME/log
+LogFile="$LogPath/NetworkACLcheckr.log"
+
+if [ ! -d "$LogPath" ]; then
+    echo "Log directory is not exit!"
+    mkdir $LogPath
+    echo "Log directory is created"
+  else
+    echo "Log directory is exit!"
+fi
+
+function SendToLog ()
+{
+echo $(date +"%Y-%m-%d %T") : $@ | tee -a "$LogFile"
+}
+
+##################### End of set "Log" file and function #######################
+
+
+
+
+
+############################### Set Variables ##################################
 
 
 ACLtestList="
@@ -24,6 +42,29 @@ udp 192.168.100.3/24:9002 192.168.101.4/24:5090
 udp 192.168.100.4/24:9003 192.168.101.3/24:3479
 udp 192.168.100.4/24:9003 192.168.101.4/24:5090
 "
+
+
+############################  End of Set Variables #############################
+
+
+
+
+
+################################# Processing ###################################
+
+
+SendToLog "NetworkACLchecker started !"
+
+printf "Enter root-password: "
+read -s ROOTPASS
+printf "\n"
+
+# Check $ROOTPASS
+sudo -k
+[ ! $( echo $ROOTPASS |sudo -S whoami 2>/dev/null |grep root) ] &&
+ SendToLog "root-passwd is wrong!"                              &&
+ exit 1
+
 
 # delete blank-line
 ACLtestList=$(echo "$ACLtestList" |grep -v ^$)
@@ -55,8 +96,9 @@ while read LINE;do
 if [ "$Protocol" = "tcp" ] ; then
 
     # Make Reciver
+    # Use sudo for the case of setting well-known port
     sudo -k                                                       # to Avoid showing the $ROOTPASS
-    echo $ROOTPASS | sudo -S nc -l $DstIPaddress $DstIPport 2>/dev/null >> ~/log/NetworkACLtest.log &
+    echo $ROOTPASS | sudo -S nc -l $DstIPaddress $DstIPport 2>/dev/null >> "$LogFile" &
 
     # Wait for "nc -l" to be activate
     sleep 0.4
@@ -68,20 +110,17 @@ if [ "$Protocol" = "tcp" ] ; then
     # Use nmap-version ncat to specify the source IP/Port address
     echo $LINE OK |
     ncat -s $SrcIPaddress -p $SrcIPport $DstIPaddress $DstIPport ||
-    echo $LINE NG |tee /dev/stderr >> ~/log/NetworkACLtest.log
+    SendToLog "$LINE NG"
 
     # Kill Reciver
     sudo pkill sudo
-    # Kill Sender
-    # pkill ncat
-    # echo `pgrep ncat`
 
 elif [ "$Protocol" = "udp" ] ; then
 
     # Make Reciver
     # Use sudo for the case of setting well-known port
     sudo -k                                                       # to Avoid showing the $ROOTPASS
-    echo $ROOTPASS | sudo -S nc -ul $DstIPaddress $DstIPport 2>/dev/null >> ~/log/NetworkACLtest.log &
+    echo $ROOTPASS | sudo -S nc -ul $DstIPaddress $DstIPport 2>/dev/null >> "$LogFile" &
 
     # Wait for "nc -ul" to be activate
     while [ ! "$(netstat -an |grep udp4 |grep $DstIPaddress.$DstIPort)" ]; do
@@ -91,13 +130,10 @@ elif [ "$Protocol" = "udp" ] ; then
     # Send Data
     echo $LINE OK |
     ncat -s $SrcIPaddress -p $SrcIPport -u $DstIPaddress $DstIPport ||
-    echo $LINE NG |tee /dev/stderr >> ~/log/NetworkACLtest.log
+    SendToLog "$LINE NG"
 
     # Kill Reciver
     sudo pkill sudo
-    # Kill Sender
-    # pkill ncat
-    # echo `pgrep ncat`
 
 else
     echo "something wrong!"
