@@ -149,7 +149,7 @@ udp 192.168.100.4/24:9003 192.168.101.4/24:5090
 ```
 
 ### 4.Test!
-Run `NetworckACLchecker.sh` ,will add the result to the `NetworkACLtest.log` 
+Run `NetworckACLchecker.sh` ,will add the result to the `NetworkACLtest.log`  
 Sudo is used for setting a well-known port as a standby port in `NetworkACLchecker.sh`  
 ```
 $ bash /Path/To/NetworkACLchecker.sh
@@ -166,7 +166,7 @@ udp 192.168.100.3/24:9002 192.168.101.4/24:5090 NG
 udp 192.168.100.4/24:9003 192.168.101.3/24:3479 OK
 udp 192.168.100.4/24:9003 192.168.101.4/24:5090 NG
 ```
-At the first run, confirmation Firewall-dialog (Do you want the application "nc" to accept incoming network connections? ..) is appeared.  
+At the first run, a confirmation Firewall-dialog (Do you want the application "nc" to accept incoming network connections? ..) is appeared.  
 Please allow it (in the case of Mojave )   
 
 ![FWDiag](https://user-images.githubusercontent.com/49780970/69227548-54f49780-0bc5-11ea-874f-d934da881d76.jpg)
