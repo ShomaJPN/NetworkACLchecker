@@ -99,9 +99,9 @@ $ ifconfig en7 |grep 'inet '
     inet 192.168.100.4 netmask 0xffffff00 broadcast 192.168.100.255
 $ ifconfig en8 |grep 'inet '
     inet 192.168.101.1 netmask 0xffffff00 broadcast 192.168.100.255
-    inet 192.168.102.2 netmask 0xffffff00 broadcast 192.168.100.255
-    inet 192.168.103.3 netmask 0xffffff00 broadcast 192.168.100.255
-    inet 192.168.104.4 netmask 0xffffff00 broadcast 192.168.100.255
+    inet 192.168.101.2 netmask 0xffffff00 broadcast 192.168.100.255
+    inet 192.168.101.3 netmask 0xffffff00 broadcast 192.168.100.255
+    inet 192.168.101.4 netmask 0xffffff00 broadcast 192.168.100.255
 ```
 When assigning more...it may be helpful to modify and use `AddIPadress.sh`
 
