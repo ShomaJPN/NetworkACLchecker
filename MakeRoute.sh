@@ -38,4 +38,5 @@ case $ANS in
     ;;
 esac
 
+# sudo route add -net 0.0.0.0 xxx.xxx.xxx.xxx <- set defaults gateway
 
