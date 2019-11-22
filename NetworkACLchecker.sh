@@ -116,9 +116,13 @@ if [ "$Protocol" = "tcp" ] ; then
     SendToLog "Reciver tcp $DstIPaddress.$DstIPport is active"
 
     # Send Data
-    # Use nmap-version ncat to specify the source IP/Port address
+    # OSX's PreInstall "nc" could set a timeout-setting over a second,,,
+    # but Nmap-version "ncat" could set less than a second
+
     echo $LINE OK |
-    ncat -s $SrcIPaddress -p $SrcIPport $DstIPaddress $DstIPport -w 0.2 ||
+
+    # nc -s $SrcIPaddress -p $SrcIPport $DstIPaddress $DstIPport -G 1 ||
+    ncat -s $SrcIPaddress -p $SrcIPport $DstIPaddress $DstIPport -w 0.1 ||
     SendToResultLog "$LINE NG"
     SendToLog "Sender tcp $SrcIPaddress.$SrcIPport sent data"
 
@@ -142,6 +146,8 @@ elif [ "$Protocol" = "udp" ] ; then
 
     # Send Data
     echo $LINE OK |
+    
+    # nc -s $SrcIPaddress -p $SrcIPport -u $DstIPaddress $DstIPport -w 1
     ncat -s $SrcIPaddress -p $SrcIPport -u $DstIPaddress $DstIPport
     SendToLog "Sender udp $SrcIPaddress.$SrcIPport sent data"
 
