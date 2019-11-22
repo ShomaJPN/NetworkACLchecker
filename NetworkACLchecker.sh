@@ -118,7 +118,7 @@ if [ "$Protocol" = "tcp" ] ; then
     # Send Data
     # Use nmap-version ncat to specify the source IP/Port address
     echo $LINE OK |
-    ncat -s $SrcIPaddress -p $SrcIPport $DstIPaddress $DstIPport ||
+    ncat -s $SrcIPaddress -p $SrcIPport $DstIPaddress $DstIPport -w 0.2 ||
     SendToResultLog "$LINE NG"
     SendToLog "Sender tcp $SrcIPaddress.$SrcIPport sent data"
 
