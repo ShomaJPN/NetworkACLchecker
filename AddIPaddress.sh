@@ -38,4 +38,7 @@ case $ANS in
     ;;
 esac
 
+ifconfig en7 |grep "en[0-9]:\|inet[ ]"
+ifconfig en8 |grep "en[0-9]:\|inet[ ]"
+
 
