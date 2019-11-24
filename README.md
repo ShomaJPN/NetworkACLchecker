@@ -1,20 +1,21 @@
 # NetworkACLchecker(macOS)
 
 ## Overview
-This tiny ShellScript checks the ACL of a Network-device with a Single Mac /w multiple NICs (e.g. two USB-Ethernet adapters).  
-This script is designed to actually send/receive data for verification, so you can leave evidence.  
+This tiny ShellScript checks the ACL of a Network-device.  
+It works with just one Mac, but requires TWO NICs (e.g. two USB-ethernet Adapters).  
+The reason is that this script sends data from one NIC to another, and checks the ACL of a Network-device in between them.  
 Protocol (TCP/UDP), IPaddress (SrcIP/DstIP), PortNo(SrcPort/DstPort) can be specified.  
 
 ![catch_fig](https://user-images.githubusercontent.com/49780970/69261960-f00d6180-0c05-11ea-8322-54f73bdaece7.gif)
 
 
 ## Description
-The feature of this script is to actually send and receive data, and Netcat is used for that purpose.  
+The feature of this script is to actually send and receive data (Netcat is used for that purpose).  
 If you want to find out more easily, consider using Nmap (it is much faster)
 
 ## Requirements
 - Bash (for ShellScript)
-  - Nmap-version Netcat (not using OSX's Pre-install "nc" for easy timeout-handling and other things)
+  - Nmap-version Netcat (do not use OSX's Pre-install "nc" for easy timeout-handling and other things)
 - User with admin privileges
 
 - Tested under Mojave 10.14.6 (Confrim Dialog/Firewall appear at the first run)
@@ -31,7 +32,6 @@ If you want to find out more easily, consider using Nmap (it is much faster)
 The network configuration diagram is as follows.  
 By using two NICs, Send/Recieve (Src/Dst) are performed on the same single Mac.  
 If you want to test two or more Src/Dst IP-addresses at the same time, it is nessesary to add multiple IP-addresses to one NIC.  
-
 ![nw_fig](https://user-images.githubusercontent.com/49780970/69229256-75722100-0bc8-11ea-9339-878b1dd21d01.jpg)
 
 The general flow is as follows:
