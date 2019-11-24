@@ -30,7 +30,7 @@ If you want to find out more easily, consider using Nmap (it is much faster)
 
 ## Setup and Test
 The network configuration diagram is as follows.  
-By using two NICs, Send/Recieve (Src/Dst) are performed on the same single Mac.  
+By using two NICs, Send/Recieve (Src/Dst) are performed on a Mac.  
 If you want to test two or more Src/Dst IP-addresses at the same time, it is nessesary to add multiple IP-addresses to one NIC.  
 ![nw_fig](https://user-images.githubusercontent.com/49780970/69229256-75722100-0bc8-11ea-9339-878b1dd21d01.jpg)
 
