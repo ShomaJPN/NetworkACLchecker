@@ -15,7 +15,7 @@ If you want to find out more easily, consider using Nmap (it is much faster)
 
 ## Requirements
 - Bash (for ShellScript)
-  - Nmap-version Netcat (do not use OSX's Pre-install "nc" for easy timeout-handling and other things)
+  - Nmap-version Netcat (not use OSX's Pre-install "nc" for easy timeout-handling and other things)
 - User with admin privileges
 
 - Tested under Mojave 10.14.6 (Confrim Dialog/Firewall appear at the first run)
