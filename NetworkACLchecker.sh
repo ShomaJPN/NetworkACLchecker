@@ -105,7 +105,6 @@ if [ "$Protocol" = "tcp" ] ; then
     # Use sudo for the case of setting well-known port
     sudo -k                                                       # to Avoid showing the $ROOTPASS
     echo "$ROOTPASS" | sudo -S nc -l $DstIPaddress $DstIPport 2>/dev/null >> "$ResultLogFile" &
-
     SendToLog "Test - $LINE"
 
     # Wait for "nc -l" to be activate
@@ -116,7 +115,7 @@ if [ "$Protocol" = "tcp" ] ; then
     SendToLog "Reciver tcp $DstIPaddress.$DstIPport is active"
 
     # Send Data
-    # OSX's PreInstall "nc" could set a timeout-setting over a second,,,
+    # OSX's PreInstall "nc" could set a timeout-setting Only over a second,,,
     # but Nmap-version "ncat" could set less than a second
 
     echo $LINE OK |
@@ -146,7 +145,6 @@ elif [ "$Protocol" = "udp" ] ; then
 
     # Send Data
     echo $LINE OK |
-    
     # nc -s $SrcIPaddress -p $SrcIPport -u $DstIPaddress $DstIPport -w 1
     ncat -s $SrcIPaddress -p $SrcIPport -u $DstIPaddress $DstIPport
     SendToLog "Sender udp $SrcIPaddress.$SrcIPport sent data"
