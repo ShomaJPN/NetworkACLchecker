@@ -3,14 +3,14 @@
 ## Overview
 This tiny ShellScript checks the ACL of a Network-device.  
 It works with just one Mac, but requires TWO NICs (e.g. two USB-ethernet Adapters).  
-The reason is that this script sends data from one NIC to another, and checks the ACL of a Network-device in between them.  
+The reason is that this script actually sends data from one NIC to another, and as a result, checks the ACL of a Network-device in between them.  
 Protocol (TCP/UDP), IPaddress (SrcIP/DstIP), PortNo(SrcPort/DstPort) can be specified.  
 
 ![catch_fig](https://user-images.githubusercontent.com/49780970/69261960-f00d6180-0c05-11ea-8322-54f73bdaece7.gif)
 
 
 ## Description
-The feature of this script is to actually send and receive data (Netcat is used for that purpose).  
+The feature of this script is to actually send and receive data (Netcat is used for it).  
 If you want to find out more easily, consider using Nmap (it is much faster)
 
 ## Requirements
@@ -24,20 +24,20 @@ If you want to find out more easily, consider using Nmap (it is much faster)
 **DO NOT run this script on the SERVER!, because it change/occupy IP address and/or Port.**
 
 ## Usage
-- AddIPaddress.sh  <-- Helper / Add multiple IP addresses to single IF
+- AddIPaddress.sh  <-- Helper / Add multiple IP addresses to IFs
 - MakeRoute.sh    <-- Helper / Make route to IP addresses
 - NetworkACLchecker.sh   <-- Main / Test Script
 
 ## Setup and Test
 The network configuration diagram is as follows.  
-By using two NICs, Send/Recieve (Src/Dst) are performed on one Mac.  
-If you want to test two or more Src/Dst IP-addresses at the same time, it is nessesary to add multiple IP-addresses to one NIC.  
+By using two NICs, Send/Recieve/Test are performed on one Mac.  
+If you want to test two or more Send/Recieve IP-addresses at the same time, it is nessesary to add multiple IP-addresses to one NIC.  
 ![nw_fig](https://user-images.githubusercontent.com/49780970/69229256-75722100-0bc8-11ea-9339-878b1dd21d01.jpg)
 
 The general flow is as follows:
-1. Set IP address to the NICs. 
+1. Set IP address to the IFs. 
 2. Make route to the IP addresses.  
-3. Add test-parameter.  
+3. Add test-parameters.  
 4. Test!
 
 For the sake of clarity, we will test with the following configuration.  
@@ -76,7 +76,7 @@ For the sake of clarity, we will test with the following configuration.
 
 
 
-### 1.Set IP addresses to the NICs
+### 1.Set IP addresses to the IFs
 Set 192.168.100.1-4/24 to en7 and 192.168.101.1-4/24 to en8  
 ```
 $ sudo ifconfig en7 192.168.100.1/24 add
