@@ -77,6 +77,9 @@ For the sake of clarity, we will test with the following configuration.
 
 
 ### 1.Set IP addresses to the IFs
+The following can be set by using `AddIPaddress.sh` (See script for details)  
+
+
 Set 192.168.100.1-4/24 to en7 and 192.168.101.1-4/24 to en8  
 ```
 $ sudo ifconfig en7 192.168.100.1/24 add
@@ -102,10 +105,12 @@ $ ifconfig en8 |grep 'inet '
     inet 192.168.101.3 netmask 0xffffff00 broadcast 192.168.100.255
     inet 192.168.101.4 netmask 0xffffff00 broadcast 192.168.100.255
 ```
-When assigning more...it may be helpful to modify and use `AddIPadress.sh`
 
 
 ### 2.Make route to the IP addresses 
+The following can be set by using `MakeRoute.sh` (See script for details)
+
+
 Set the route so that Src IP and Dst IP do not communicate via MAC-inside (but through the gateway)
 ```
 $ sudo route add -host 192.168.100.1 192.168.101.254
@@ -126,7 +131,6 @@ $ route get 192.168.100.1
 destination: 192.168.100.1
     gateway: 192.168.101.254
 ```
-May be helpful to modify and use `MakeRoute.sh`
 
 
 ### 3.Add test-parameters
