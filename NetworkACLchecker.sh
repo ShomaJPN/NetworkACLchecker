@@ -115,8 +115,8 @@ if [ "$Protocol" = "tcp" ] ; then
     SendToLog "Reciver tcp $DstIPaddress.$DstIPport is active"
 
     # Send Data
-    # OSX's PreInstall "nc" could set a timeout-setting Only over a second,,,
-    # but Nmap-version "ncat" could set less than a second
+    # OSX's PreInstall "nc" could not set timeout less than a second,
+    # so usr Nmap-version "ncat"
 
     echo $LINE OK |
 
